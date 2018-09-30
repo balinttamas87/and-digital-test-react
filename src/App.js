@@ -30,9 +30,11 @@ class App extends Component {
         }));
       };
 
-      Promise.all(thirtyIds.map(storyId => getStory(storyId))).then(stories => {
-        stories.map(story => addStoryToState(story));
-      });
+      return Promise.all(thirtyIds.map(storyId => getStory(storyId))).then(
+        stories => {
+          stories.map(story => addStoryToState(story));
+        }
+      );
     });
   }
 

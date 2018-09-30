@@ -1,45 +1,22 @@
-const getTopStoriesIdList = () => {
-  const url = "https://hacker-news.firebaseio.com/v0/topstories.json";
-  return fetch(url)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      throw new Error(
-        "An error has occured while fetching list of IDs of top stories"
-      );
-    })
-    .catch(error => {
-      throw new Error(error);
-    });
-};
+const request = (url, errorMessage) =>
+  fetch(url).then(res => (res.ok ? res.json() : Promise.reject(errorMessage)));
 
-const getStory = storyId => {
-  const url = `https://hacker-news.firebaseio.com/v0/item/${storyId}.json`;
-  return fetch(url)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      throw new Error("An error has occured while fetching a story");
-    })
-    .catch(error => {
-      throw new Error(error);
-    });
-};
+const getTopStoriesIdList = () =>
+  request(
+    "https://hacker-news.firebaseio.com/v0/topstories.json",
+    "An error has occured while fetching list of IDs of top stories"
+  );
 
-const getComment = commentId => {
-  const url = `https://hacker-news.firebaseio.com/v0/item/${commentId}.json`;
-  return fetch(url)
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      throw new Error("An error has occured while fetching a comment");
-    })
-    .catch(error => {
-      throw new Error(error);
-    });
-};
+const getStory = storyId =>
+  request(
+    `https://hacker-news.firebaseio.com/v0/item/${storyId}.json`,
+    "An error has occured while fetching list of IDs of top stories"
+  );
+
+const getComment = commentId =>
+  request(
+    `https://hacker-news.firebaseio.com/v0/item/${commentId}.json`,
+    "An error has occured while fetching a comment"
+  );
 
 export { getTopStoriesIdList, getStory, getComment };
