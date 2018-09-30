@@ -8,7 +8,8 @@ class App extends Component {
     super(props);
     this.state = {
       topStories: [],
-      comments: []
+      comments: [],
+      error: ""
     };
 
     this.loadTopStories = this.loadTopStories.bind(this);
@@ -21,21 +22,23 @@ class App extends Component {
   }
 
   loadTopStories() {
-    getTopStoriesIdList().then(listOfIds => {
-      const thirtyIds = listOfIds.slice(0, 30);
+    getTopStoriesIdList()
+      .then(listOfIds => {
+        const thirtyIds = listOfIds.slice(0, 30);
 
-      const addStoryToState = story => {
-        this.setState(prevState => ({
-          topStories: [...prevState.topStories, story]
-        }));
-      };
+        const addStoryToState = story => {
+          this.setState(prevState => ({
+            topStories: [...prevState.topStories, story]
+          }));
+        };
 
-      return Promise.all(thirtyIds.map(storyId => getStory(storyId))).then(
-        stories => {
-          stories.map(story => addStoryToState(story));
-        }
-      );
-    });
+        return Promise.all(thirtyIds.map(storyId => getStory(storyId)))
+          .then(stories => {
+            stories.map(story => addStoryToState(story));
+          })
+          .catch(error => this.setState({ error }));
+      })
+      .catch(error => this.setState({ error }));
   }
 
   loadCommentsForStory(commentIds) {
@@ -45,9 +48,9 @@ class App extends Component {
       }));
     };
 
-    return Promise.all(commentIds.map(id => getComment(id))).then(comments =>
-      comments.map(comment => setCommentToState(comment))
-    );
+    return Promise.all(commentIds.map(id => getComment(id)))
+      .then(comments => comments.map(comment => setCommentToState(comment)))
+      .catch(error => this.setState({ error }));
   }
 
   handleStoryClick(commentIds) {
