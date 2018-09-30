@@ -1,18 +1,55 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+import { getTopStoriesIdList, getStory } from "./requests";
 import "./App.css";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      topStories: []
+    };
+  }
+
+  /* eslint-disable class-methods-use-this */
+  componentDidMount() {
+    this.loadTopStories();
+  }
+
+  loadTopStories() {
+    getTopStoriesIdList().then(listOfIds => {
+      const thirtyIds = listOfIds.slice(0, 30);
+
+      const addStoryToState = story => {
+        this.setState(prevState => ({
+          topStories: [...prevState.topStories, story]
+        }));
+      };
+
+      Promise.all(thirtyIds.map(storyId => getStory(storyId))).then(stories => {
+        stories.map(story => addStoryToState(story));
+      });
+    });
+  }
+
+  /* eslint-disable class-methods-use-this */
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+      <div className="page">
+        <header>
+          <h1>Hacker News - Top Stories</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div className="page-stories">
+          {this.state.topStories.map(story => (
+            <div className="story" key={story.id}>
+              <div className="story-title-wrapper">
+                <p className="story-title">{story.title}</p>
+              </div>
+              <div className="story-details-wrapper">
+                <p className="story-details">details</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
