@@ -67,8 +67,7 @@ class App extends Component {
           score={story.score}
           by={story.by}
           key={story.id}
-          commentIds={story.kids}
-          handleClick={this.handleStoryClick}
+          onClick={() => this.handleStoryClick(story.kids)}
         />
       ));
 
