@@ -44,7 +44,7 @@ class App extends Component {
 
     return (
       <div className="page">
-        <header>
+        <header className="page-header">
           <h1>Hacker News - Top Stories</h1>
         </header>
         <section className="page-stories">{renderTopStories()}</section>
