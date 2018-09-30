@@ -28,4 +28,18 @@ const getStory = storyId => {
     });
 };
 
-export { getTopStoriesIdList, getStory };
+const getComment = commentId => {
+  const url = `https://hacker-news.firebaseio.com/v0/item/${commentId}.json`;
+  return fetch(url)
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      throw new Error("An error has occured while fetching a comment");
+    })
+    .catch(error => {
+      throw new Error(error);
+    });
+};
+
+export { getTopStoriesIdList, getStory, getComment };

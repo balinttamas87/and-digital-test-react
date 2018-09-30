@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getTopStoriesIdList, getStory } from "./requests";
+import { getTopStoriesIdList, getStory, getComment } from "./requests";
 import Story from "./components/Story";
 import "./App.css";
 
@@ -7,8 +7,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      topStories: []
+      topStories: [],
+      comments: []
     };
+
+    this.loadTopStories = this.loadTopStories.bind(this);
+    this.loadCommentsForStory = this.loadCommentsForStory.bind(this);
+    this.handleStoryClick = this.handleStoryClick.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +36,24 @@ class App extends Component {
     });
   }
 
+  loadCommentsForStory(commentIds) {
+    const setCommentToState = comment => {
+      this.setState(prevState => ({
+        comments: [...prevState.comments, comment]
+      }));
+    };
+
+    return Promise.all(commentIds.map(id => getComment(id))).then(comments =>
+      comments.map(comment => setCommentToState(comment))
+    );
+  }
+
+  handleStoryClick(commentIds) {
+    this.setState({ comments: [] }, () => {
+      this.loadCommentsForStory(commentIds);
+    });
+  }
+
   render() {
     const renderTopStories = () =>
       this.state.topStories.map(story => (
@@ -39,6 +62,8 @@ class App extends Component {
           score={story.score}
           by={story.by}
           key={story.id}
+          commentIds={story.kids}
+          handleClick={this.handleStoryClick}
         />
       ));
 
