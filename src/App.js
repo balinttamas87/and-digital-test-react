@@ -9,7 +9,8 @@ class App extends Component {
     this.state = {
       topStories: [],
       comments: [],
-      error: ""
+      error: "",
+      loading: false
     };
 
     this.loadTopStories = this.loadTopStories.bind(this);
@@ -22,13 +23,16 @@ class App extends Component {
   }
 
   loadTopStories() {
+    this.setState({ loading: true });
+
     getTopStoriesIdList()
       .then(listOfIds => {
         const thirtyIds = listOfIds.slice(0, 30);
 
         const addStoryToState = story => {
           this.setState(prevState => ({
-            topStories: [...prevState.topStories, story]
+            topStories: [...prevState.topStories, story],
+            loading: false
           }));
         };
 
@@ -36,21 +40,24 @@ class App extends Component {
           .then(stories => {
             stories.map(story => addStoryToState(story));
           })
-          .catch(error => this.setState({ error }));
+          .catch(error => this.setState({ error, loading: false }));
       })
-      .catch(error => this.setState({ error }));
+      .catch(error => this.setState({ error, loading: false }));
   }
 
   loadCommentsForStory(commentIds) {
+    this.setState({ loading: true });
+
     const setCommentToState = comment => {
       this.setState(prevState => ({
-        comments: [...prevState.comments, comment]
+        comments: [...prevState.comments, comment],
+        loading: false
       }));
     };
 
     return Promise.all(commentIds.map(id => getComment(id)))
       .then(comments => comments.map(comment => setCommentToState(comment)))
-      .catch(error => this.setState({ error }));
+      .catch(error => this.setState({ error, loading: false }));
   }
 
   handleStoryClick(commentIds) {
@@ -60,7 +67,7 @@ class App extends Component {
   }
 
   render() {
-    const { error, topStories } = this.state;
+    const { error, loading, topStories } = this.state;
 
     const renderTopStories = () =>
       topStories.map(story => (
@@ -78,6 +85,7 @@ class App extends Component {
         <header className="page-header">
           <h1>Hacker News - Top Stories</h1>
         </header>
+        {loading && <div>Loading...</div>}
         {error ? (
           <div>Oops an error has occured. Please refresh the page.</div>
         ) : (
