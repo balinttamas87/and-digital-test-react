@@ -21,7 +21,8 @@
     ],
     "globals": {
         "it": false,
-        "expect": false
+        "expect": false,
+        "describe": false
     },
     "rules": {
         "import/no-extraneous-dependencies": [
