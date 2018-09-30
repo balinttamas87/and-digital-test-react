@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { getTopStoriesIdList, getStory } from "./requests";
+import Story from "./components/Story";
 import "./App.css";
 
 class App extends Component {
@@ -10,7 +11,6 @@ class App extends Component {
     };
   }
 
-  /* eslint-disable class-methods-use-this */
   componentDidMount() {
     this.loadTopStories();
   }
@@ -31,25 +31,23 @@ class App extends Component {
     });
   }
 
-  /* eslint-disable class-methods-use-this */
   render() {
+    const renderTopStories = () =>
+      this.state.topStories.map(story => (
+        <Story
+          title={story.title}
+          score={story.score}
+          by={story.by}
+          key={story.id}
+        />
+      ));
+
     return (
       <div className="page">
         <header>
           <h1>Hacker News - Top Stories</h1>
         </header>
-        <div className="page-stories">
-          {this.state.topStories.map(story => (
-            <div className="story" key={story.id}>
-              <div className="story-title-wrapper">
-                <p className="story-title">{story.title}</p>
-              </div>
-              <div className="story-details-wrapper">
-                <p className="story-details">details</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <section className="page-stories">{renderTopStories()}</section>
       </div>
     );
   }
