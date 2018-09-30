@@ -19,6 +19,10 @@
         "prettier",
         "react"
     ],
+    "globals": {
+        "it": false,
+        "expect": false
+    },
     "rules": {
         "import/no-extraneous-dependencies": [
             "warn"

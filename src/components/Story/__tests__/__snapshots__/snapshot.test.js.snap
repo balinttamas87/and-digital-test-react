@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders <Story /> component and matches snapshot 1`] = `
+<div
+  className="story"
+  onClick={[Function]}
+>
+  <div
+    className="story-title-wrapper"
+  >
+    <p
+      className="story-title"
+    >
+      Title
+    </p>
+  </div>
+  <div
+    className="story-details-wrapper"
+  >
+    <p
+      className="story-details"
+    >
+      100 points by author
+    </p>
+  </div>
+</div>
+`;
