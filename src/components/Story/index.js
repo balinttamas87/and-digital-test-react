@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "./Story.css";
 
 const Story = ({ title, score, by }) => (
   <div className="story">

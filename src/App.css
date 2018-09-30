@@ -1,22 +1,3 @@
 .page {
     background-color: #f6f6ef;
 }
-
-.story {
-    font-size: 14px;
-    padding-left: 8px;
-    padding-bottom: 4px;
-}
-
-.story-title {
-    margin: 4px;
-}
-
-.story-details-wrapper {
-    color: var(--color-story-details);
-}
-
-.story-details {
-    margin: 4px;
-    font-size: 10px;
-}
