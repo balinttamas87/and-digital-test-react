@@ -60,8 +60,10 @@ class App extends Component {
   }
 
   render() {
+    const { error, topStories } = this.state;
+
     const renderTopStories = () =>
-      this.state.topStories.map(story => (
+      topStories.map(story => (
         <Story
           title={story.title}
           score={story.score}
@@ -76,7 +78,11 @@ class App extends Component {
         <header className="page-header">
           <h1>Hacker News - Top Stories</h1>
         </header>
-        <section className="page-stories">{renderTopStories()}</section>
+        {error ? (
+          <div>Oops an error has occured. Please refresh the page.</div>
+        ) : (
+          <section className="page-stories">{renderTopStories()}</section>
+        )}
       </div>
     );
   }
